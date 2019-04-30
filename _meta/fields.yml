@@ -1,0 +1,9 @@
+- key: oktabeat
+  title: oktabeat
+  description:
+  fields:
+    - name: counter
+      type: long
+      required: true
+      description: >
+        PLEASE UPDATE DOCUMENTATION
