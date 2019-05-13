@@ -38,3 +38,7 @@ git-init:
 git-add:
 	git add -A
 	git commit -m "Add generated oktabeat files"
+
+.PHONY: openapi
+openapi:
+	GO_POST_PROCESS_FILE="/usr/local/bin/gofmt -w" openapi-generator generate -i okta_syslog.yml -g go -c config.json --enable-post-process-file -o okta/

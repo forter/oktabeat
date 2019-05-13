@@ -5,3 +5,5 @@
 /oktabeat
 /oktabeat.test
 *.pyc
+data/
+logs/

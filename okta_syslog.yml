@@ -1,0 +1,349 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: rnd@forter.com
+    name: Forter RnD
+    url: github.com/forter
+  description: The Okta System Log API (https://developer.okta.com/docs/api/resources/system_log) provides read access to your organization's system log. The API is intended to export event data as a batch job from your organization to another system for reporting or analysis.
+  title: System Log (Okta API)
+  version: "1.0"
+servers:
+  - url: https://{okta_url}/api/v1
+    description: Okta API
+    variables:
+      okta_url:
+        default: example.okta.com
+        description: Your okta production user
+security:
+  - ApiKeyAuth: []
+paths:
+  /logs:
+    get:
+      description: Get okta system logs
+      deprecated: false
+      operationId: GetLogs
+      tags:
+        - logs
+      parameters:
+        - explode: true
+          in: query
+          name: since
+          required: false
+          allowReserved: true
+          schema:
+            type: string
+          style: form
+        - explode: true
+          in: query
+          name: until
+          required: false
+          allowReserved: true
+          schema:
+            type: string
+          style: form
+        - explode: true
+          in: query
+          name: after
+          required: false
+          schema:
+            type: string
+          style: form
+        - explode: true
+          in: query
+          name: filter
+          required: false
+          schema:
+            type: string
+          style: form
+        - explode: true
+          in: query
+          name: q
+          required: false
+          schema:
+            type: string
+          style: form
+        - explode: true
+          in: query
+          name: sortOrder
+          required: false
+          schema:
+            default: ASCENDING
+            enum:
+              - ASCENDING
+              - DESCENDING
+            type: string
+          style: form
+        - explode: true
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 1000
+            format: int32
+            maximum: 1000
+            minimum: 100
+            type: integer
+          style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/LogEvent'
+                type: array
+          description: Ok
+          headers:
+            Link:
+              explode: false
+              schema:
+                description: To parse
+                type: string
+              style: simple
+        400:
+          content:
+            application/json:
+              schema:
+                type: object
+          description: something invalid
+        500:
+          content:
+            application/json:
+              schema:
+                type: object
+          description: something invalid
+      summary: Get logs
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+  schemas:
+    Actor:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        aleternateId:
+          type: string
+        displayName:
+          type: string
+        detailEntry:
+          type: object
+    Client:
+      type: object
+      properties:
+        userAgent:
+          type: object
+          properties:
+            rawUserAgent:
+              type: string
+            os:
+              type: string
+            browser:
+              type: string
+        geographicalContext:
+          type: object
+          properties:
+            geolocation:
+              type: object
+              properties:
+                lat:
+                  type: number
+                lon:
+                  type: number
+            city:
+              type: string
+            state:
+              type: string
+            country:
+              type: string
+            postalCode:
+              type: string
+        zone:
+          type: string
+        ipAddress:
+          type: string
+        device:
+          type: string
+        id:
+          type: string
+    Target:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        alternateId:
+          type: string
+        displayName:
+          type: string
+        detailEntry:
+          type: object
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+            - WEB
+            - JOB
+        detail:
+          type: object
+    AuthenticationContext:
+      type: object
+      properties:
+        authenticationProvider:
+          enum:
+            - OKTA_AUTHENTICATION_PROVIDER
+            - ACTIVE_DIRECTORY
+            - LDAP
+            - FEDERATION
+            - SOCIAL
+            - FACTOR_PROVIDER
+        credentialProvider:
+          enum:
+            - OKTA_CREDENTIAL_PROVIDER
+            - RSA
+            - SYMANTEC
+            - GOOGLE
+            - DUO
+            - YUBIKEY
+        credentialType:
+          enum:
+            - OTP
+            - SMS
+            - PASSWORD
+            - ASSERTION
+            - IWA
+            - EMAIL
+            - OAUTH2
+            - JWT
+            - CERTIFICATE
+            - PRE_SHARED_SYMMETRIC_KEY
+            - OKTA_CLIENT_SESSION
+            - DEVICE_UUID
+        issuer:
+          type: object
+        externalSessionId:
+          type: string
+        interface:
+          type: string
+    SecurityContext:
+      type: object
+      properties:
+        asNumber:
+          type: number
+        asOrg:
+          type: string
+        isp:
+          type: string
+        domain:
+          type: string
+        isProxy:
+          type: boolean
+    LogEvent:
+      description: Log Events from Syslog
+      type: object
+      required:
+        - uuid
+        - published
+        - eventType
+        - version
+        - severity
+        - actor
+      example:
+        version: '0'
+        severity: INFO
+        client:
+          zone: OFF_NETWORK
+          device: Unknown
+          userAgent:
+            os: Unknown
+            browser: UNKNOWN
+            rawUserAgent: UNKNOWN-DOWNLOAD
+          ipAddress: 12.97.85.90
+        actor:
+          id: 00u1qw1mqitPHM8AJ0g7
+          type: User
+          alternateId: admin@tc1-trexcloud.com
+          displayName: John Fung
+        outcome:
+          result: SUCCESS
+        uuid: f790999f-fe87-467a-9880-6982a583986c
+        published: '2017-09-31T22:23:07.777Z'
+        eventType: user.session.start
+        displayMessage: User login to Okta
+        transaction:
+          type: WEB
+          id: V04Oy4ubUOc5UuG6s9DyNQAABtc
+        debugContext:
+          debugData:
+            requestUri: "/login/do-login"
+        legacyEventType: core.user_auth.login_success
+        authenticationContext:
+          authenticationStep: 0
+          externalSessionId: 1013FfF-DKQSvCI4RVXChzX-w
+      properties:
+        actor:
+          $ref: "#/components/schemas/Actor"
+        uuid:
+          type: string
+        published:
+          type: string
+        eventType:
+          type: string
+        version:
+          type: string
+        severity:
+          enum:
+            - DEBUG
+            - INFO
+            - WARN
+            - ERROR
+        legacyEventType:
+          type: string
+        displayMessage:
+          type: string
+        client:
+          $ref: "#/components/schemas/Client"
+        outcome:
+          type: object
+          required:
+            - result
+          properties:
+            result:
+              enum:
+                - SUCCESS
+                - FAILURE
+                - SKIPPED
+                - UNKOWN
+            reason:
+              type: string
+        target:
+          type: array
+          items:
+            $ref: "#/components/schemas/Target"
+        transaction:
+          $ref: "#/components/schemas/Transaction"
+        debugContext:
+          type: object
+        authenticationContext:
+          $ref: "#/components/schemas/AuthenticationContext"
+        securityContext:
+          $ref: "#/components/schemas/SecurityContext"
+        request:
+          type: object
+
+

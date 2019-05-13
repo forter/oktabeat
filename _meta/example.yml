@@ -1,0 +1,7 @@
+oktabeat:
+  # Defines how often an event is sent to the output
+  period: 10s
+  okta_domain: forter.okta.com
+  api_key: ${OKTA_API_KEY}
+output.console:
+  pretty: true
