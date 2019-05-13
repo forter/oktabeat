@@ -1,0 +1,10 @@
+/go/src/github.com/forter/cloudtrailbeat/build/python-env
+tests/
+docs/
+_meta/
+CONTRIBUTING.md
+*.yml
+*.lock
+*.toml
+NOTICE.txt
+README.md
