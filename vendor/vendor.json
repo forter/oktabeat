@@ -27,6 +27,18 @@
 			"revisionTime": "2018-10-05T04:51:35Z"
 		},
 		{
+			"checksumSHA1": "wRLo86qqt/7IwI8X43IjXLvveU0=",
+			"path": "golang.org/x/net/context",
+			"revision": "9ce7a6920f093fc0b908c4a5f66ae049110f417e",
+			"revisionTime": "2019-04-26T17:45:11Z"
+		},
+		{
+			"checksumSHA1": "r3TepGHO4dhGIrtN0jV7TFq8Kms=",
+			"path": "golang.org/x/net/context/ctxhttp",
+			"revision": "9ce7a6920f093fc0b908c4a5f66ae049110f417e",
+			"revisionTime": "2019-04-26T17:45:11Z"
+		},
+		{
 			"checksumSHA1": "YmT7rublqJIk4NFkbO3xxNoofXY=",
 			"path": "golang.org/x/oauth2",
 			"revision": "9f3314589c9a9136388751d9adae6b0ed400978a",
